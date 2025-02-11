@@ -20,6 +20,8 @@ Create a feature that allows users to:
 Note: Build as far as you get in a few hours, focus on the parts you consider most important to show your skills and best practices.
 If you run out of time, feel free to add your thoughts and ideas as comments or notes.
 
+And feel free to improve our code base ! :)
+
 ## Tech Stack
 - Frontend: React + TypeScript
 - Backend: FastAPI + Python
