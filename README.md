@@ -6,9 +6,21 @@ This is a code challenge for full-stack developers. The challenge involves build
 ## Challenge Description
 Create a feature that allows users to:
 1. Upload a PDF file through a web interface
-2. Parse the PDF content on the backend
-3. Store the parsed content in a database
-4. Display the parsed content in a structured way on the frontend
+2. Parse the PDF content on the backend into chunks/sections:
+   - Each PDF should be split into logical sections (e.g., by pages or chapters)
+   - Store basic metadata (upload date, title, total pages) with the PDF
+3. Store the parsed content in a database (PDF and its chunks)
+4. Display the parsed content in a structured way on the frontend:
+   - A list view showing available PDFs with their metadata
+   - A detail view showing:
+     - PDF metadata
+     - A paginated list of chunks/sections
+     - The ability to search through chunks
+
+Note: Build as far as you get in a few hours, focus on the parts you consider most important to show your skills and best practices.
+If you run out of time, feel free to add your thoughts and ideas as comments or notes.
+
+And feel free to improve our code base ! :)
 
 ## Tech Stack
 - Frontend: React + TypeScript
@@ -20,7 +32,7 @@ Create a feature that allows users to:
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+source venv/bin/activate  
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
@@ -42,9 +54,9 @@ The boilerplate includes a basic authentication system:
 1. Clean, well-structured code
 2. Architecture best practices
 3. Quality best practices
-
-7. Performance best practices
-8. Security best practices
+4. Efficient database querying
+5. Performance best practices
+6. Security best practices
 
 Please follow and improve what you find, leave comments to explain your changes.
 
