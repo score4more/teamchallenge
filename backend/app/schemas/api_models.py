@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 
@@ -10,8 +10,7 @@ class PDFMetaDataSchema(BaseModel):
     total_pages: int
     size: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PDFChunkSchema(BaseModel):
@@ -20,5 +19,4 @@ class PDFChunkSchema(BaseModel):
     page_number: int
     content: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

@@ -55,6 +55,7 @@ const DropZone: React.FC = () => {
       {/* @ts-ignore */}
       <Box
         component="div"
+        data-testid="dropzone"
         {...getRootProps()}
         sx={{
           p: 2,

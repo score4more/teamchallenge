@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
 # In a real application, this would come from environment variables
 SQLALCHEMY_DATABASE_URL = "sqlite:///./app.db"

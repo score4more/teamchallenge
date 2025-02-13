@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation, matchPath } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
+import {loginUser} from "../services/api.js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,31 +14,15 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    
-    try {
-      const response = await fetch('http://localhost:8000/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          username: email,
-          password: password,
-        }),
-      });
+    setError("");
 
-      const data = await response.json();
-      
-      if (response.ok) {
-        login(data.access_token);
-        const redirectPath = location?.state?.from || "/";
-        navigate(redirectPath, { replace: true });
-      } else {
-        setError(data.detail || 'Login failed');
-      }
+    try {
+      const token = await loginUser(email, password);
+      login(token);
+      const redirectPath = location?.state?.from || "/";
+      navigate(redirectPath, { replace: true });
     } catch (err) {
-      setError('An error occurred during login');
+      setError(err.message);
     }
   };
 
