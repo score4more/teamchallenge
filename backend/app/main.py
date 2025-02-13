@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app import route_listeners
-from app.database import engine
-from app import database_models
+from app.api import route_listeners
+from app.models.database import engine
+from app.models import database_models
 
 app = FastAPI(title="Code Challenge API")
 database_models.Base.metadata.create_all(bind=engine)

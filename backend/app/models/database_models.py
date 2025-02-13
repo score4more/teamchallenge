@@ -1,6 +1,6 @@
 from sqlalchemy import Column, DateTime, Integer, String, Float, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from app.database import Base
+from app.models.database import Base
 
 
 class PDFMetaData(Base):

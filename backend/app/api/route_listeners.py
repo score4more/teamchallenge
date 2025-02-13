@@ -3,11 +3,13 @@ from datetime import datetime, timedelta
 from typing import Optional
 import jwt
 import pdfplumber
+import os
+from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status, APIRouter, UploadFile, File
 from fastapi.encoders import jsonable_encoder
-from app.database import get_db
-from app.database_models import PDFMetaData, PDFChunk
-from app.api_models import PDFMetaDataSchema, PDFChunkSchema
+from app.models.database import get_db
+from app.models.database_models import PDFMetaData, PDFChunk
+from app.schemas.api_models import PDFMetaDataSchema, PDFChunkSchema
 from sqlalchemy.orm import Session
 from typing import List, Dict
 
@@ -15,8 +17,11 @@ from typing import List, Dict
 app = APIRouter()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-SECRET_KEY = "your-secret-key-for-development"  # In production, use environment variable
-ALGORITHM = "HS256"
+
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 # For demo purposes - in real app this would be in a database
 DEMO_USER = {
@@ -134,7 +139,6 @@ async def upload(
             db.add_all(all_chunks)
             db.commit()
             pdf_meta_data = PDFMetaDataSchema.model_validate(new_pdf)
-            chunk_data = [PDFChunkSchema.model_validate(chunk) for chunk in all_chunks]
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to process PDF: {str(e)}")
