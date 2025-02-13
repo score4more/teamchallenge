@@ -3,8 +3,7 @@ import {AppBar, Box, Button, Container, Toolbar, Typography} from "@mui/material
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../store/configureStore";
-import {privateRequest} from "../hooks/requestHandler";
-import {setAllPDFs, setPDFChunks} from "../store/pdfsSlice";
+import {fetchPDFChunks} from "../store/pdfsSlice";
 import {notification} from "antd";
 import {hideOverlay, showOverlay} from "../Components/helpers";
 import {useAuth} from "../context/AuthContext";
@@ -25,34 +24,13 @@ const PDFDetail = () => {
 
   useEffect(() => {
     if (!allPDFChunks) {
-      (async () => {
-        await fetchPDFChunks();
-      })();
+      showOverlay();
+      dispatch(fetchPDFChunks({ id: id!, token }))
+        .unwrap()
+        .catch((error) => notification.error({ message: "Error", description: error }))
+        .finally(hideOverlay);
     }
   }, [id, allPDFChunks]);
-
-  const fetchPDFChunks = async () => {
-    try {
-      showOverlay();
-      const response = await privateRequest(`http://localhost:8000/pdf_chunks/${id}`, token, {
-        method: "GET",
-      } as RequestInit);
-      const data = await response.json();
-      if (response.ok) {
-        dispatch(setPDFChunks({ pdfId: Number(id), chunks: data.chunks }));
-        if (!allPDFs.length) {
-          dispatch(setAllPDFs(data.meta_data));
-        }
-      } else {
-        notification.error({message: "Error", description: data.detail || "Unknown error"});
-      }
-    } catch (error) {
-      notification.error({message: "Error", description: "Error Fetching Data."});
-    } finally {
-      hideOverlay();
-    }
-  }
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>

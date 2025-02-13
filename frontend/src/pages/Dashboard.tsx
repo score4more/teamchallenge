@@ -1,48 +1,23 @@
 import React, {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, Button, Container, CircularProgress } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import DropZone from "../Components/DropZone";
 import PDFTable from "../Components/PDFTable";
 import {AppDispatch, RootState} from "../store/configureStore";
-import {privateRequest} from "../hooks/requestHandler";
-import {notification} from "antd";
-import {setAllPDFs} from "../store/pdfsSlice";
-import {hideOverlay, showOverlay} from "../Components/helpers";
-import {PDFMetadata} from "../store/initialState";
+import {fetchAllPDFs} from "../store/pdfsSlice";
+
 
 const Dashboard: React.FC = () => {
   const { logout, token } = useAuth();
-  const allPDFs = useSelector<RootState, PDFMetadata[]>(
-      (state: RootState) => state.pdfReducer.allPDFs
-  );
+  const { allPDFs, loading, error, fetched } = useSelector((state: RootState) => state.pdfReducer);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const fetchAllPDFs = async () => {
-      try {
-        const response = await privateRequest("http://localhost:8000/pdfs", token, {
-          method: "GET",
-        } as RequestInit);
-        const data = await response.json();
-        if (response.ok) {
-          dispatch(setAllPDFs(data));
-        } else {
-          notification.error({ message: "Error", description: data.detail || "Unknown error" });
-        }
-        hideOverlay();
-      } catch (error) {
-        notification.error({ message: "Error", description: "Error Fetching Data." });
-        hideOverlay();
-      }
+    if (token && !fetched) {
+      dispatch(fetchAllPDFs(token));
     }
-
-    if (!allPDFs.length) {
-      showOverlay();
-      fetchAllPDFs();
-    }
-
-  }, [])
+  }, [token, dispatch]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -61,7 +36,13 @@ const Dashboard: React.FC = () => {
           Welcome to the Dashboard
         </Typography>
         <DropZone/>
-        <PDFTable/>
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <PDFTable pdfs={allPDFs} />
+        )}
       </Container>
     </Box>
   );

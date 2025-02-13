@@ -2,17 +2,14 @@ import {Box, Stack, Typography} from "@mui/material";
 import React from "react";
 import {useDropzone} from "react-dropzone";
 import {notification} from "antd";
-import {privateRequest} from "../hooks/requestHandler";
 import {useAuth} from "../context/AuthContext";
 import {showOverlay, hideOverlay} from "./helpers";
-import {setAllPDFs} from "../store/pdfsSlice";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../store/configureStore";
-import {PDFMetadata} from "../store/initialState";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../store/configureStore";
+import {uploadPDF} from "../store/pdfsSlice";
 
 const DropZone: React.FC = () => {
   const {token} = useAuth()
-  const allPDFs = useSelector<RootState, PDFMetadata[]>((state: RootState) => state.pdfReducer.allPDFs);
   const dispatch = useDispatch<AppDispatch>();
 
   const onDrop = (acceptedFiles: File[], fileRejections: any[]) => {
@@ -48,30 +45,8 @@ const DropZone: React.FC = () => {
 
   const handleSubmit = async (file) => {
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    try {
-      showOverlay();
-      const response = await privateRequest("http://localhost:8000/upload", token, {
-        method: "POST",
-        body: formData,
-      } as RequestInit);
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const updatedPDFs = [...allPDFs, data.pdf_meta];
-        dispatch(setAllPDFs(updatedPDFs));
-        notification.success({ message: "Success", description: "File uploaded successfully!" });
-      } else {
-        notification.error({ message: "Upload Failed", description: data.detail || "Unknown error" });
-      }
-      hideOverlay();
-    } catch (error) {
-      notification.error({ message: "Error", description: "An error occurred during file upload." });
-      hideOverlay();
-    }
+    showOverlay();
+    dispatch(uploadPDF({ file, token })).finally(hideOverlay);
   };
 
   return (

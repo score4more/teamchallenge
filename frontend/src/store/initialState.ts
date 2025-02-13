@@ -18,10 +18,24 @@ export interface PDFChunk {
 export interface PDFState {
   allPDFs: PDFMetadata[];
   pdfChunks: Record<number, PDFChunk[]>; // Dictionary where key = PDF ID, value = array of chunks
+  loading: boolean;
+  uploading: boolean;
+  error: string | null;
+  uploadError: string | null;
+  fetched: boolean;
+  loadingChunks: boolean;
+  errorChunks: string | null;
 }
 
 // Initial state
 export const initialState: PDFState = {
   allPDFs: [],
   pdfChunks: {},
+  loading: false,
+  error: null,
+  uploading: true,
+  uploadError: null,
+  fetched: false,
+  loadingChunks: false,
+  errorChunks: null,
 };

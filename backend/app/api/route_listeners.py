@@ -166,7 +166,7 @@ async def all_pdfs(
     return pdfs
 
 
-@app.get("/pdf_chunks/{pdf_id}", response_model=Dict[str, List[PDFChunkSchema] | List[PDFMetaDataSchema]])
+@app.get("/pdf_chunks/{pdf_id}", response_model=Dict[str, List[PDFChunkSchema] | List[PDFMetaDataSchema] | int])
 async def get_pdf_chunks(
     pdf_id: str,
     current_user: str = Depends(get_current_user),
@@ -192,4 +192,4 @@ async def get_pdf_chunks(
         raise HTTPException(status_code=403, detail="Access denied: You do not own this PDF.")
 
     chunks = db.query(PDFChunk).filter(PDFChunk.pdf_id == pdf_id).all()
-    return {"chunks": chunks, "meta_data": pdfs}
+    return {"chunks": chunks, "meta_data": pdfs, "id": pdf_id}
