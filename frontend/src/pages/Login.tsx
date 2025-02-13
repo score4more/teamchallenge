@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, matchPath } from 'react-router-dom';
 import { Box, Button, TextField, Typography, Container, Paper } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation()
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +31,8 @@ const Login = () => {
       
       if (response.ok) {
         login(data.access_token);
-        navigate('/');
+        const redirectPath = location?.state?.from || "/";
+        navigate(redirectPath, { replace: true });
       } else {
         setError(data.detail || 'Login failed');
       }
