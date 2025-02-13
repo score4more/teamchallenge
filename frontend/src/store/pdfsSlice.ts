@@ -3,7 +3,7 @@ import {initialState, PDFMetadata, PDFChunk, PDFState} from "./initialState";
 import {fetchAllPDFsService, uploadPDFRequest, fetchPDFChunksRequest} from "../services/api";
 import {notification} from "antd";
 
-export const fetchAllPDFs = createAsyncThunk(
+export const fetchAllPDFs = createAsyncThunk<PDFMetadata[], string>(
   "pdfs/fetchAll",
   async (token: string, { rejectWithValue }) => {
     try {
