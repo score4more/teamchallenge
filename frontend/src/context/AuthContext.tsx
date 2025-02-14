@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+
+let globalLogout: (() => void) | null = null;
+
+export const setGlobalLogout = (logoutFn: () => void) => {
+  globalLogout = logoutFn;
+};
+
+export const getGlobalLogout = () => globalLogout;
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -29,6 +37,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('token');
     setToken(null);
   }, []);
+
+  useEffect(() => {
+    setGlobalLogout(logout);
+  }, [logout]);
 
   const value = {
     isAuthenticated: !!token,
