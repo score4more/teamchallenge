@@ -1,9 +1,23 @@
-import React from 'react';
-import { Box, AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
+import React, {useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, AppBar, Toolbar, Typography, Button, Container, CircularProgress } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
+import DropZone from "../Components/DropZone";
+import PDFTable from "../Components/PDFTable";
+import {AppDispatch, RootState} from "../store/configureStore";
+import {fetchAllPDFs} from "../store/pdfsSlice";
 
-const Dashboard = () => {
-  const { logout } = useAuth();
+
+const Dashboard: React.FC = () => {
+  const { logout, token } = useAuth();
+  const { allPDFs, loading, error, fetched } = useSelector((state: RootState) => state.pdfReducer);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (token && !fetched) {
+      dispatch(fetchAllPDFs(token));
+    }
+  }, [token, dispatch]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -21,12 +35,17 @@ const Dashboard = () => {
         <Typography variant="h4" gutterBottom>
           Welcome to the Dashboard
         </Typography>
-        <Typography variant="body1">
-          This is where you'll implement the PDF upload and parsing feature.
-        </Typography>
+        <DropZone/>
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <PDFTable pdfs={allPDFs} />
+        )}
       </Container>
     </Box>
   );
 };
 
-export default Dashboard; 
+export default Dashboard;
