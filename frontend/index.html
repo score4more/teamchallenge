@@ -1,12 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Code Challenge</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload PDF</title>
+</head>
+<body>
+    <h2>Upload PDF</h2>
+    <input type="file" id="pdfFile">
+    <button onclick="uploadPDF()">Upload</button>
+    <h3>Uploaded PDFs</h3>
+    <ul id="pdfList"></ul>
+
+    <script>
+        async function uploadPDF() {
+            const fileInput = document.getElementById("pdfFile");
+            if (!fileInput.files.length) {
+                alert("Please select a PDF file.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            const response = await fetch("http://127.0.0.1:8000/upload_pdf/", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert("PDF uploaded successfully!");
+                fetchPDFs();
+            } else {
+                alert("Error uploading PDF.");
+            }
+        }
+
+        async function fetchPDFs() {
+            const response = await fetch("http://127.0.0.1:8000/pdfs/");
+            const pdfs = await response.json();
+            const pdfList = document.getElementById("pdfList");
+            pdfList.innerHTML = "";
+
+            pdfs.forEach(pdf => {
+                const li = document.createElement("li");
+                li.innerHTML = `${pdf.title} - ${pdf.total_pages} pages`;
+                pdfList.appendChild(li);
+            });
+        }
+
+        fetchPDFs();  // Load PDFs on page load
+    </script>
+</body>
+</html>
