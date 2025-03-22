@@ -33,8 +33,9 @@ const Dashboard = () => {
   const fetchPdfs = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/pdfs/");
+      const response = await fetch("http://127.0.0.1:8000/list_pdfs/");
       const data = await response.json();
+      console.log(data,"data")
       setPdfs(data);
     } catch (error) {
       console.error("Error fetching PDFs:", error);
@@ -72,11 +73,15 @@ const Dashboard = () => {
       const response = await fetch("http://127.0.0.1:8000/upload_pdf/", {
         method: "POST",
         body: formData,
+        headers:{
+          'Access-Control-Allow-Origin':'*'
+        }
       });
-
+      
       if (response.ok) {
         alert("PDF uploaded successfully!");
         fetchPdfs();
+
       } else {
         alert("Error uploading PDF.");
       }
