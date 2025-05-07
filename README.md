@@ -1,72 +1,68 @@
-# Full Stack Code Challenge: PDF Parser
+# Score4More
 
-## Overview
-This is a code challenge for full-stack developers. The challenge involves building a PDF parsing feature with a React frontend and FastAPI backend.
+Score4More is a web application that helps users upload and analyze PDF documents. The project consists of both frontend and backend components.
 
-## Challenge Description
-Create a feature that allows users to:
-1. Upload a PDF file through a web interface
-2. Parse the PDF content on the backend into chunks/sections:
-   - Each PDF should be split into logical sections (e.g., by pages or chapters)
-   - Store basic metadata (upload date, title, total pages) with the PDF
-3. Store the parsed content in a database (PDF and its chunks)
-4. Display the parsed content in a structured way on the frontend:
-   - A list view showing available PDFs with their metadata
-   - A detail view showing:
-     - PDF metadata
-     - A paginated list of chunks/sections
-     - The ability to search through chunks
+## Project Structure
 
-Note: Build as far as you get in a few hours, focus on the parts you consider most important to show your skills and best practices.
-If you run out of time, feel free to add your thoughts and ideas as comments or notes.
+- `frontend/` - React-based web interface
+- `backend/` - FastAPI-based API server
 
-And feel free to improve our code base ! :)
+## Features
 
-## Tech Stack
-- Frontend: React + TypeScript
-- Backend: FastAPI + Python
+- JWT-based authentication
+- PDF document upload and processing
+- Interactive dashboard
+- API documentation with Swagger UI
+- Cross-platform compatibility
 
-## Getting Started
+## Requirements
 
-### Backend Setup
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
+- Node.js (for frontend)
+- Python 3.11.7 (for backend)
+- [Poetry](https://python-poetry.org/) for Python dependency management
 
-### Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## Setup and Running
 
-## Authentication
-The boilerplate includes a basic authentication system:
-- Demo credentials: 
-  - Email: demo@example.com
-  - Password: demo123
+### Backend
 
-## What We're Looking For
-1. Clean, well-structured code
-2. Architecture best practices
-3. Quality best practices
-4. Efficient database querying
-5. Performance best practices
-6. Security best practices
+1. Navigate to the backend directory:
+   ```sh
+   cd backend
+   ```
 
-Please follow and improve what you find, leave comments to explain your changes.
+2. Install dependencies:
+   ```sh
+   poetry install
+   ```
 
-## Time Expectation
-This challenge is designed to take 2-4 hours.
+3. Run the server:
+   ```sh
+   poetry run start
+   ```
 
-If you run out of time, feel free to add your thoughts and ideas as comments or notes.
+4. Access the API documentation:
+   - Swagger UI: http://localhost:8000/docs
+   - ReDoc: http://localhost:8000/redoc
 
-## Submission
-1. Fork this repository
-2. Implement your solution
-3. Create a pull request
-4. Include any additional documentation or notes in the PR description
+### Frontend
+
+1. Navigate to the frontend directory:
+   ```sh
+   cd frontend
+   ```
+
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+
+3. Start the development server:
+   ```sh
+   npm run dev
+   ```
+
+4. Access the application in your browser at http://localhost:5173/
+
+## Environment Variables
+
+- Backend configuration is managed in `backend/app/core/config.py`
