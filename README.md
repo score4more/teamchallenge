@@ -62,7 +62,7 @@ The boilerplate includes a basic authentication system:
 Please follow and improve what you find, leave comments to explain your changes.
 
 ## Time Expectation
-This challenge is designed to take 2-4 hours.
+This challenge is designed to take 4-6 hours.
 
 If you run out of time, feel free to add your thoughts and ideas as comments or notes.
 
