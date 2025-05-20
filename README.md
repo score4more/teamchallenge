@@ -57,6 +57,7 @@ The boilerplate includes a basic authentication system:
 4. Efficient database querying
 5. Performance best practices
 6. Security best practices
+7. Test-Driven Development (TDD) approach to ensure code quality and maintainability
 
 Please follow and improve what you find, leave comments to explain your changes.
 
